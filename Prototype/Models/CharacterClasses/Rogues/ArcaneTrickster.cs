@@ -2,5 +2,9 @@
 {
     public class ArcaneTrickster : Rogue
     {
+        public ArcaneTrickster()
+            : base(name: nameof(ArcaneTrickster))
+        {
+        }
     }
 }

@@ -2,5 +2,9 @@
 {
     public class DraconicBloodline : Sorcerer
     {
+        public DraconicBloodline()
+            : base(name: nameof(DraconicBloodline))
+        {
+        }
     }
 }

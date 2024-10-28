@@ -2,5 +2,9 @@
 {
     public class BattleMaster : Fighter
     {
+        public BattleMaster()
+            : base(name: nameof(BattleMaster))
+        {
+        }
     }
 }

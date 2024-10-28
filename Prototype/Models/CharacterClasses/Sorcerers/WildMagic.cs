@@ -2,5 +2,9 @@
 {
     public class WildMagic : Sorcerer
     {
+        public WildMagic()
+            : base(name: nameof(WildMagic))
+        {
+        }
     }
 }

@@ -1,11 +1,39 @@
-﻿namespace Prototype.Models
+﻿using Prototype.Models.CharacterClasses;
+using Prototype.Models.CharacterClasses.Fighters;
+
+namespace Prototype.Models
 {
+    /// <summary>
+    /// Character model.
+    /// </summary>
     public class Character
     {
-        public string Name { get; set; }
+        /// <summary>
+        /// Character name.
+        /// </summary>
+        public string Name { get; protected set; } = "The Nameless One";
 
-        public byte Level { get; set; }
+        /// <summary>
+        /// Character classes.
+        /// </summary>
+        /// <remarks>
+        /// Characters with multiple classes are called "multiclass characters".
+        /// </remarks>
+        public List<BaseCharacterClass> CharacterClasses { get; protected set; } = [new Fighter()];
 
-        public Health Health { get; set; }
+        /// <summary>
+        /// Character health.
+        /// </summary>
+        public Health Health { get; protected set; } = new();
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return string.Format(
+                "Character: {0}, {1}, HP {2}",
+                Name,
+                string.Join(", ", CharacterClasses),
+                Health);
+        }
     }
 }
