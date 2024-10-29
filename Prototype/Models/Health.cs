@@ -1,22 +1,24 @@
-﻿namespace Prototype.Models
+﻿using Prototype.Interfaces;
+
+namespace Prototype.Models
 {
     /// <summary>
     /// Health model.
     /// </summary>
-    public class Health
+    public class Health : IMyCloneable<Health>, IEquatable<Health>, ICloneable
     {
-        private byte _current;
+        private int _current;
 
         /// <summary>
         /// Maximum health level.
         /// </summary>
-        public byte Max { get; set; }
+        public int Max { get; set; }
 
         /// <summary>
         /// Current health level.<br/>
         /// Cannot exceed <see cref="Max"/>.
         /// </summary>
-        public byte Current {
+        public int Current {
             get => _current;
             set
             {
@@ -26,19 +28,49 @@
                     return;
                 }
 
+                if (value < 0)
+                {
+                    _current = 0;
+                    return;
+                }
+
                 _current = value;
             }
         }
 
-        public Health()
+        public Health(int maximum)
         {
-            Max = 10;
-            Current = 10;
+            Max = maximum;
+            Current = maximum;
         }
 
+        public Health(int maximum, int current)
+        {
+            Max = maximum;
+            Current = current;
+        }
+
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{Current}/{Max}";
+        }
+
+        /// <inheritdoc/>
+        public Health MyClone()
+        {
+            return new Health(Max, Current);
+        }
+
+        /// <inheritdoc/>
+        public object Clone() => MyClone();
+
+        /// <inheritdoc/>
+        public bool Equals(Health? other)
+        {
+            return other != null &&
+                other.Max == Max &&
+                other.Current == Current;
         }
     }
 }
