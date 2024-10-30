@@ -1,4 +1,5 @@
 ﻿using Prototype.Models;
+using Prototype.Tests.Interfaces;
 
 namespace Prototype.Tests.Models
 {
@@ -6,117 +7,80 @@ namespace Prototype.Tests.Models
     /// Tests for <see cref="Health"/>.
     /// </summary>
     [TestFixture]
-    public class HealthTests
+    public class HealthTests : MyCloneableTestBase<Health>
     {
-        private const int HealthCurrent = 5;
         private const int HealthMaximim = 10;
 
-        [Test]
-        public void Test_Constructor_SetsCurrentToMax_WhenCurrentNotSpecified()
+        /// <summary>
+        /// Test that constructor with unspecified current health
+        /// sets current to maximum.
+        /// </summary>
+        /// <param name="maximumHealth">Maximum health points supplied to the constructor.</param>
+        /// <returns>Current health points.</returns>
+        [TestCase(0, ExpectedResult = 0)]
+        [TestCase(HealthMaximim, ExpectedResult = HealthMaximim)]
+        public int Test_Constructor_SetsCurrent_ToMax_WhenCurrentIsNotSpecified(
+            int maximumHealth)
         {
-            Health health = new(HealthMaximim);
+            Health health = new(maximumHealth);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(health.Current, Is.EqualTo(HealthMaximim));
-                Assert.That(health.Max, Is.EqualTo(HealthMaximim));
-            });
+            return health.Current;
         }
 
-        [Test]
-        public void Test_Constructor_SetsCurrent_WhenCurrentSpecified()
+        /// <summary>
+        /// Test that constructor with specified current health
+        /// sets current to the specified value,
+        /// unless it is out of bounds of the [0; maximum] interval,
+        /// in which case it is adjusted to the interval end.
+        /// </summary>
+        /// <param name="currentHealth">Current health points supplied to the constructor.</param>
+        /// <param name="maximumHealth">Maximum health points supplied to the constructor.</param>
+        /// <returns>Current health points.</returns>
+        [TestCase(-1, 10, ExpectedResult = 0)]
+        [TestCase(0, 10, ExpectedResult = 0)]
+        [TestCase(5, 10, ExpectedResult = 5)]
+        [TestCase(10, 10, ExpectedResult = 10)]
+        [TestCase(15, 10, ExpectedResult = 10)]
+        public int Test_Constructor_SetsCurrent_WhenCurrentIsSpecified(
+            int currentHealth,
+            int maximumHealth)
         {
-            Health health = new(maximum: HealthMaximim, current: HealthCurrent);
+            Health health = new(maximum: maximumHealth, current: currentHealth);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(health.Current, Is.EqualTo(HealthCurrent));
-                Assert.That(health.Max, Is.EqualTo(HealthMaximim));
-            });
+            return health.Current;
         }
 
-        [Test]
-        public void Test_Constructor_SetsCurrentToMax_WhenCurrentOverflowsMax()
+        /// <summary>
+        /// Test that <see cref="Health.Current"/> retains
+        /// in the [0; maximum] interval.
+        /// </summary>
+        /// <param name="currentHealth">Current health points.</param>
+        /// <param name="currentHealthModification">Current health points modification.</param>
+        /// <returns>Current health points after modification.</returns>
+        [TestCase(1, -10, ExpectedResult = 0)]
+        [TestCase(1, -1, ExpectedResult = 0)]
+        [TestCase(HealthMaximim, +1, ExpectedResult = HealthMaximim)]
+        public int Test_Current_DoesNotAllowOverflow(
+            int currentHealth,
+            int currentHealthModification)
         {
-            Health health = new(maximum: HealthMaximim, current: HealthMaximim * 2);
+            Health health = new(maximum: HealthMaximim, current: currentHealth);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(health.Current, Is.EqualTo(HealthMaximim));
-                Assert.That(health.Max, Is.EqualTo(HealthMaximim));
-            });
+            health.Current += currentHealthModification;
+
+            return health.Current;
         }
 
-        [Test]
-        public void Test_Current_DoesNotAllowOverflow()
+        /// <inheritdoc/>
+        protected override Health CreateInstance()
         {
-            Health health = new(HealthMaximim);
-
-            health.Current += 10;
-
-            Assert.That(health.Current, Is.EqualTo(HealthMaximim));
+            return new(maximum: HealthMaximim, current: 5);
         }
 
-        [Test]
-        public void Test_Current_DoesNotDropBelowZero()
+        /// <inheritdoc/>
+        protected override void ModifyInstance(Health instance)
         {
-            Health health = new(maximum: HealthMaximim, current: 1);
-
-            health.Current -= 10;
-
-            Assert.That(health.Current, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void Test_MyClone_ClonedProperties()
-        {
-            Health health = new(maximum: HealthMaximim, current: HealthCurrent);
-
-            Health clone = health.MyClone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(health));
-                Assert.That(clone, Is.EqualTo(health));
-
-                Assert.That(clone.Current, Is.EqualTo(HealthCurrent));
-                Assert.That(clone.Max, Is.EqualTo(HealthMaximim));
-            });
-        }
-
-        [Test]
-        public void Test_MyClone_IsNotAffectedByChangesToOriginal()
-        {
-            Health health = new(maximum: HealthMaximim);
-
-            Health clone = health.MyClone();
-            health.Current -= 5;
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(health));
-                Assert.That(clone, Is.Not.EqualTo(health));
-
-                Assert.That(health.Current, Is.EqualTo(HealthMaximim - 5));
-                Assert.That(clone.Current, Is.EqualTo(HealthMaximim));
-            });
-        }
-
-        [Test]
-        public void Test_Clone_IsEqualToMyClone()
-        {
-            Health health = new(maximum: HealthMaximim, current: HealthCurrent);
-
-            Health clone = health.MyClone();
-            object cloneObj = health.Clone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(cloneObj, Is.Not.SameAs(clone));
-                Assert.That(cloneObj, Is.EqualTo(clone));
-
-                Assert.That(cloneObj is Health);
-            });
+            instance.Current -= 5;
         }
     }
 }
