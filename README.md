@@ -34,16 +34,16 @@ Health &mdash; специализированный класс для хране
 
 #### Существа
 
-Creature &mdash; базовый, но не абстрактный класс для существ, то есть в иерархии находится на нулевом уровне.<br/>
+[Creature](Prototype/Models/Creature.cs) &mdash; базовый, но не абстрактный класс для существ, то есть в иерархии находится на нулевом уровне.<br/>
 Существо обладает именем, здоровьем и возможностью совершать атаку.
 
-Bandit &mdash; класс-наследник базового Creature, то есть в иерархии находится на первом уровне.<br/>
+[Bandit](Prototype/Models/Bandit.cs) &mdash; класс-наследник базового Creature, то есть в иерархии находится на первом уровне.<br/>
 Помимо уникальной атаки, бандит имеет некоторое количество золотых монет.
 
-BanditArcher &mdash; класс-наследник класса Bandit, то есть в иерархии находится на втором уровне.<br/>
+[BanditArcher](Prototype/Models/BanditArcher.cs) &mdash; класс-наследник класса Bandit, то есть в иерархии находится на втором уровне.<br/>
 Отличается от рядового бандита только уникальной атакой.
 
-Elemental &mdash; класс-наследник базового Creature, то есть, как и Bandit, в иерархии находится на первом уровне.<br/>
+[Elemental](Prototype/Models/Elemental.cs) &mdash; класс-наследник базового Creature, то есть, как и Bandit, в иерархии находится на первом уровне.<br/>
 Помимо уникальной атаки, имеет уникальное свойство Element, указывающее на тип элементали (огненная, водяная и т.д.).<br/>
 Не требует ручного присваивания имени (у элементалей недостаточно развита самоидентификация).
 
@@ -101,7 +101,7 @@ Scorching!
 
 Для Health, Creature и Bandit написаны тесты для конструкторов и свойств.
 
-Для классов, реализующих IMyCloneable, ICloneable и IEquatable (то есть для Health, Creature, Bandit, BanditArcher и Elemental) написаны тесты MyCloneableTestBase.
+Для классов, реализующих IMyCloneable, ICloneable и IEquatable (то есть для Health, Creature, Bandit, BanditArcher и Elemental) написаны тесты [MyCloneableTestBase](Prototype.Tests/Interfaces/MyCloneableTestBase.cs).
 
 Особо примечательны:
 * сравнения Is.SameAs(), позволяющие убедиться, что клон не является оригинальным объектом;
