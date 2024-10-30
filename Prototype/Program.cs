@@ -4,9 +4,15 @@ using Prototype.Models;
 
 namespace Prototype
 {
+    /// <summary>
+    /// Main program.
+    /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        /// <summary>
+        /// Main method.
+        /// </summary>
+        public static void Main()
         {
             /* Cloning a previously damaged creature. */
 
@@ -59,6 +65,12 @@ namespace Prototype
             ((Elemental)fireElementalCloneObj).Attack();
         }
 
+        /// <summary>
+        /// Demonstrate the <see cref="IMyCloneable{T}.MyClone"/> method.
+        /// </summary>
+        /// <typeparam name="T">Type of the object to be cloned.</typeparam>
+        /// <param name="original">The original object to be cloned.</param>
+        /// <returns>The clone of the original.</returns>
         private static T DemonstrateMyClone<T>(T original)
             where T : IMyCloneable<T>
         {
@@ -72,6 +84,13 @@ namespace Prototype
             return clone;
         }
 
+        /// <summary>
+        /// Demonstrate that the cloned object is a deep copy, and is not
+        /// affected by the changes of the original object.
+        /// </summary>
+        /// <typeparam name="T">Type of the object to be cloned.</typeparam>
+        /// <param name="original">The original object.</param>
+        /// <param name="clone">The clone of the original.</param>
         private static void DemonstrateMyCloneUnchanged<T>(T original, T clone)
             where T : Creature
         {
@@ -83,6 +102,11 @@ namespace Prototype
             Console.WriteLine($"Cloned: {clone}");
         }
 
+        /// <summary>
+        /// Output the message to the console with the background specified.
+        /// </summary>
+        /// <param name="message">Message text.</param>
+        /// <param name="backgroundColor">Background color.</param>
         private static void WriteColoredLine(string message, ConsoleColor backgroundColor)
         {
             Console.BackgroundColor = backgroundColor;
@@ -93,6 +117,11 @@ namespace Prototype
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Output the message wrapped in empty lines for visibility
+        /// and in purple.
+        /// </summary>
+        /// <param name="message">Message text.</param>
         private static void WriteHeader(string message)
         {
             Console.WriteLine();
@@ -100,6 +129,10 @@ namespace Prototype
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Output the message in green.
+        /// </summary>
+        /// <param name="message">Message text.</param>
         private static void WriteSubHeader(string message)
         {
             WriteColoredLine(message, ConsoleColor.Green);

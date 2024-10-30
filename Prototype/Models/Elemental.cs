@@ -3,21 +3,38 @@ using Prototype.Interfaces;
 
 namespace Prototype.Models
 {
+    /// <summary>
+    /// An elemental creature.
+    /// </summary>
     public class Elemental : Creature, IMyCloneable<Elemental>
     {
-        public Element Element { get; protected set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Elemental"/> class.<br/>
+        /// Current health is set as <paramref name="maxHealth"/>.
+        /// </summary>
+        /// <param name="element">Value indicating the element of the elemental.</param>
+        /// <param name="maxHealth">Elemental maximum (and current) health points.</param>
         public Elemental(Element element, int maxHealth)
             : base(GetElementalName(element), maxHealth)
         {
             Element = element;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Elemental"/> class.
+        /// </summary>
+        /// <param name="element">Value indicating the element of the elemental.</param>
+        /// <param name="health">Elemental health.</param>
         public Elemental(Element element, Health health)
             : base(GetElementalName(element), health)
         {
             Element = element;
         }
+
+        /// <summary>
+        /// Gets or sets the element of the elemental.
+        /// </summary>
+        public Element Element { get; protected set; }
 
         /// <inheritdoc/>
         public override Elemental MyClone()
@@ -48,6 +65,9 @@ namespace Prototype.Models
             }
         }
 
+        /// <summary>
+        /// Get the elemental creature name based on its element.
+        /// </summary>
         private static string GetElementalName(Element element) => $"{element} Elemental";
     }
 }

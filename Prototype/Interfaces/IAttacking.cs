@@ -1,5 +1,8 @@
 ﻿namespace Prototype.Interfaces
 {
+    /// <summary>
+    /// Supports attacking.
+    /// </summary>
     public interface IAttacking
     {
         /// <summary>

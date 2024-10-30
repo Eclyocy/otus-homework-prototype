@@ -10,15 +10,40 @@ namespace Prototype.Models
         private int _current;
 
         /// <summary>
-        /// Maximum health level.
+        /// Initializes a new instance of the <see cref="Health"/> class.<br/>
+        /// Current health is set as <paramref name="maximum"/>.
+        /// </summary>
+        /// <param name="maximum">Both maximum and current health points.</param>
+        public Health(int maximum)
+        {
+            Max = maximum;
+            Current = maximum;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Health"/> class.
+        /// </summary>
+        /// <param name="maximum">Maximum health points.</param>
+        /// <param name="current">Current health points.</param>
+        public Health(int maximum, int current)
+        {
+            Max = maximum;
+            Current = current;
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum health level.
         /// </summary>
         public int Max { get; protected set; }
 
         /// <summary>
-        /// Current health level.<br/>
-        /// Cannot exceed <see cref="Max"/>.
+        /// Gets or sets the current health level.
         /// </summary>
-        public int Current {
+        /// <remarks>
+        /// Cannot exceed <see cref="Max"/>. Autocapped.
+        /// </remarks>
+        public int Current
+        {
             get => _current;
             set
             {
@@ -36,18 +61,6 @@ namespace Prototype.Models
 
                 _current = value;
             }
-        }
-
-        public Health(int maximum)
-        {
-            Max = maximum;
-            Current = maximum;
-        }
-
-        public Health(int maximum, int current)
-        {
-            Max = maximum;
-            Current = current;
         }
 
         /// <inheritdoc/>

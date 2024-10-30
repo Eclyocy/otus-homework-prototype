@@ -9,8 +9,8 @@ namespace Prototype.Tests.Models
     public class BanditTests
     {
         private const string BanditName = "Bob";
-        private readonly int BanditMaxHealth = 30;
-        private readonly int BanditGoldCoins = 15;
+        private const int BanditMaxHealth = 30;
+        private const int BanditGoldCoins = 15;
 
         [Test]
         public void Test_Constructor_SetsGoldCoinsToZero_WhenGoldCoinsNotSpecified()

@@ -9,7 +9,7 @@ namespace Prototype.Tests.Models
     public class CreatureTests
     {
         private const string CreatureName = "Fire Elemental";
-        private readonly int CreatureMaxHealth = 25;
+        private const int CreatureMaxHealth = 25;
 
         [Test]
         public void Test_Constructor()
