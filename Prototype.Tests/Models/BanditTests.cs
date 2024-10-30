@@ -12,6 +12,10 @@ namespace Prototype.Tests.Models
         private const int BanditMaxHealth = 30;
         private const int BanditGoldCoins = 15;
 
+        /// <summary>
+        /// Test that constructor sets the gold coins to zero
+        /// when gold coins number is not specified.
+        /// </summary>
         [Test]
         public void Test_Constructor_SetsGoldCoinsToZero_WhenGoldCoinsNotSpecified()
         {
@@ -26,6 +30,9 @@ namespace Prototype.Tests.Models
             });
         }
 
+        /// <summary>
+        /// Test that constructor sets the gold coins to specified number.
+        /// </summary>
         [Test]
         public void Test_Constructor_SetsGoldCoins_WhenGoldCoinsSpecified()
         {
@@ -40,6 +47,9 @@ namespace Prototype.Tests.Models
             });
         }
 
+        /// <summary>
+        /// Test that constructor requires the number of gold coins to be positive.
+        /// </summary>
         [Test]
         public void Test_Constructor_Throws_WhenGoldCoinsNegative()
         {
