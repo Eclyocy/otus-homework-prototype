@@ -5,7 +5,7 @@ namespace Prototype.Models
     /// <summary>
     /// A bandit archer.
     /// </summary>
-    public class BanditArcher : Bandit, IMyCloneable<BanditArcher>
+    public class BanditArcher : Bandit, IMyCloneable<BanditArcher>, IEquatable<BanditArcher>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BanditArcher"/> class.<br/>
@@ -34,6 +34,25 @@ namespace Prototype.Models
         public override BanditArcher MyClone()
         {
             return new BanditArcher(Name, Health.MyClone(), GoldCoins);
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(BanditArcher? other)
+        {
+            return other != null &&
+                base.Equals(other);
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as BanditArcher);
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         /// <inheritdoc/>

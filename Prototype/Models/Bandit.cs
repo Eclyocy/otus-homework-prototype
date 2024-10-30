@@ -5,7 +5,7 @@ namespace Prototype.Models
     /// <summary>
     /// A common bandit.
     /// </summary>
-    public class Bandit : Creature, IMyCloneable<Bandit>
+    public class Bandit : Creature, IMyCloneable<Bandit>, IEquatable<Bandit>
     {
         private int _goldCoins;
 
@@ -58,6 +58,26 @@ namespace Prototype.Models
         public override string ToString()
         {
             return base.ToString() + $" with {GoldCoins} gold coins";
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(Bandit? other)
+        {
+            return other != null &&
+                base.Equals(other) &&
+                other.GoldCoins == GoldCoins;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Bandit);
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), GoldCoins);
         }
 
         /// <inheritdoc/>

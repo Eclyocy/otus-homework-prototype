@@ -6,7 +6,7 @@ namespace Prototype.Models
     /// <summary>
     /// An elemental creature.
     /// </summary>
-    public class Elemental : Creature, IMyCloneable<Elemental>
+    public class Elemental : Creature, IMyCloneable<Elemental>, IEquatable<Elemental>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Elemental"/> class.<br/>
@@ -40,6 +40,26 @@ namespace Prototype.Models
         public override Elemental MyClone()
         {
             return new Elemental(Element, Health.MyClone());
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(Elemental? other)
+        {
+            return other != null &&
+                base.Equals(other) &&
+                other.Element == Element;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Elemental);
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode, Element);
         }
 
         /// <inheritdoc/>

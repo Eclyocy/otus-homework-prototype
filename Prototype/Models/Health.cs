@@ -77,12 +77,6 @@ namespace Prototype.Models
         }
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
-            return $"{Current}/{Max}";
-        }
-
-        /// <inheritdoc/>
         public Health MyClone()
         {
             return new Health(Max, Current);
@@ -92,11 +86,29 @@ namespace Prototype.Models
         public object Clone() => MyClone();
 
         /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Current}/{Max}";
+        }
+
+        /// <inheritdoc/>
         public bool Equals(Health? other)
         {
             return other != null &&
                 other.Max == Max &&
                 other.Current == Current;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Health);
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Max, Current);
         }
     }
 }

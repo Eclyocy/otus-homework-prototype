@@ -58,6 +58,9 @@ namespace Prototype.Models
         }
 
         /// <inheritdoc/>
+        public object Clone() => MyClone();
+
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{Name}, HP: {Health}";
@@ -72,7 +75,16 @@ namespace Prototype.Models
         }
 
         /// <inheritdoc/>
-        public object Clone() => MyClone();
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Creature);
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Health);
+        }
 
         /// <inheritdoc/>
         public virtual void Attack()
