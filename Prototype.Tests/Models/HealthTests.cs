@@ -12,12 +12,24 @@ namespace Prototype.Tests.Models
         private const int HealthMaximim = 10;
 
         /// <summary>
+        /// Test that constructor throws when supplied maximum is less than 1.
+        /// </summary>
+        /// <param name="maximumHealth">Maximum health points supplied to the constructor.</param>
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Test_Constructor_Throws_WhenMaximumIsInvalid(
+            int maximumHealth)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Health(maximum: maximumHealth));
+        }
+
+        /// <summary>
         /// Test that constructor with unspecified current health
         /// sets current to maximum.
         /// </summary>
         /// <param name="maximumHealth">Maximum health points supplied to the constructor.</param>
         /// <returns>Current health points.</returns>
-        [TestCase(0, ExpectedResult = 0)]
+        [TestCase(1, ExpectedResult = 1)]
         [TestCase(HealthMaximim, ExpectedResult = HealthMaximim)]
         public int Test_Constructor_SetsCurrent_ToMax_WhenCurrentIsNotSpecified(
             int maximumHealth)

@@ -7,6 +7,7 @@ namespace Prototype.Models
     /// </summary>
     public class Health : IMyCloneable<Health>, IEquatable<Health>, ICloneable
     {
+        private int _maximum;
         private int _current;
 
         /// <summary>
@@ -34,7 +35,19 @@ namespace Prototype.Models
         /// <summary>
         /// Gets or sets the maximum health level.
         /// </summary>
-        public int Max { get; protected set; }
+        /// <remarks>
+        /// Must be at least 1.
+        /// </remarks>
+        public int Max
+        {
+            get => _maximum;
+            protected set
+            {
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, 1, nameof(Max));
+
+                _maximum = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the current health level.
