@@ -40,6 +40,7 @@ namespace Prototype.Models
             return base.ToString() + $" with {GoldCoins} gold coins";
         }
 
+        /// <inheritdoc/>
         public override void Attack()
         {
             Console.WriteLine("Yarr! Gimme yer gold!");

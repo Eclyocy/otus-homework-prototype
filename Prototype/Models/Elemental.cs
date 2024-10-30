@@ -25,6 +25,7 @@ namespace Prototype.Models
             return new Elemental(Element, Health.MyClone());
         }
 
+        /// <inheritdoc/>
         public override void Attack()
         {
             switch (Element)

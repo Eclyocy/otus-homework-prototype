@@ -12,7 +12,7 @@ namespace Prototype.Models
         /// <summary>
         /// Maximum health level.
         /// </summary>
-        public int Max { get; set; }
+        public int Max { get; protected set; }
 
         /// <summary>
         /// Current health level.<br/>

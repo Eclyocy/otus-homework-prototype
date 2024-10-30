@@ -40,6 +40,7 @@ namespace Prototype.Models
                 other.Health.Equals(Health);
         }
 
+        /// <inheritdoc/>
         public object Clone() => MyClone();
 
         public virtual void Attack()
