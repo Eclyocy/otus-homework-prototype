@@ -6,6 +6,7 @@ namespace Prototype.Tests.Models
     /// <summary>
     /// Tests for <see cref="BanditArcher"/>.
     /// </summary>
+    [TestFixture]
     public class BanditArcherTests : MyCloneableTestBase<BanditArcher>
     {
         /// <inheritdoc/>

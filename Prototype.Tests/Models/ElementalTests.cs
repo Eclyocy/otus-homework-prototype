@@ -7,6 +7,7 @@ namespace Prototype.Tests.Models
     /// <summary>
     /// Tests for <see cref="Elemental"/>.
     /// </summary>
+    [TestFixture]
     public class ElementalTests : MyCloneableTestBase<Elemental>
     {
         /// <inheritdoc/>
