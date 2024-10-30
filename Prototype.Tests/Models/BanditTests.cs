@@ -1,4 +1,5 @@
 ﻿using Prototype.Models;
+using Prototype.Tests.Interfaces;
 
 namespace Prototype.Tests.Models
 {
@@ -6,7 +7,7 @@ namespace Prototype.Tests.Models
     /// Tests for <see cref="Bandit"/>.
     /// </summary>
     [TestFixture]
-    public class BanditTests
+    public class BanditTests : MyCloneableTestBase<Bandit>
     {
         private const string BanditName = "Bob";
         private const int BanditMaxHealth = 30;
@@ -57,89 +58,17 @@ namespace Prototype.Tests.Models
                 () => new Bandit(BanditName, BanditMaxHealth, goldCoins: -1));
         }
 
-        [Test]
-        public void Test_MyClone_ClonedProperties()
+        /// <inheritdoc/>
+        protected override Bandit CreateInstance()
         {
-            Bandit bandit = new(BanditName, BanditMaxHealth);
-
-            Bandit clone = bandit.MyClone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(bandit));
-                Assert.That(clone, Is.EqualTo(bandit));
-
-                Assert.That(clone.Name, Is.EqualTo(bandit.Name));
-                Assert.That(clone.GoldCoins, Is.EqualTo(bandit.GoldCoins));
-
-                Assert.That(clone.Health, Is.Not.SameAs(bandit.Health));
-                Assert.That(clone.Health, Is.EqualTo(bandit.Health));
-            });
+            return new(BanditName, BanditMaxHealth);
         }
 
-        [Test]
-        public void Test_MyClone_CopiesTrailingCurrentHealth_WhenOriginalIsChangedBeforeCloning()
+        /// <inheritdoc/>
+        protected override void ModifyInstance(Bandit instance)
         {
-            Bandit bandit = new(BanditName, BanditMaxHealth);
-            bandit.Health.Current -= 5;
-
-            Bandit clone = bandit.MyClone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(bandit));
-                Assert.That(clone, Is.EqualTo(bandit));
-
-                Assert.That(clone.Name, Is.EqualTo(bandit.Name));
-                Assert.That(clone.GoldCoins, Is.EqualTo(bandit.GoldCoins));
-
-                Assert.That(clone.Health, Is.Not.SameAs(bandit.Health));
-                Assert.That(clone.Health, Is.EqualTo(bandit.Health));
-
-                Assert.That(bandit.Health.Current, Is.EqualTo(BanditMaxHealth - 5));
-                Assert.That(clone.Health.Current, Is.EqualTo(BanditMaxHealth - 5));
-            });
-        }
-
-        [Test]
-        public void Test_MyClone_CopiesStartingCurrentHealth_WhenOriginalIsChangedAfterCloning()
-        {
-            Bandit bandit = new(BanditName, BanditMaxHealth);
-
-            Bandit clone = bandit.MyClone();
-            bandit.Health.Current -= 5;
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(bandit));
-                Assert.That(clone, Is.Not.EqualTo(bandit));
-
-                Assert.That(clone.Name, Is.EqualTo(bandit.Name));
-                Assert.That(clone.GoldCoins, Is.EqualTo(bandit.GoldCoins));
-
-                Assert.That(clone.Health, Is.Not.SameAs(bandit.Health));
-                Assert.That(clone.Health, Is.Not.EqualTo(bandit.Health));
-
-                Assert.That(bandit.Health.Current, Is.EqualTo(BanditMaxHealth - 5));
-                Assert.That(clone.Health.Current, Is.EqualTo(BanditMaxHealth));
-            });
-        }
-
-        [Test]
-        public void Test_Clone_IsEqualToMyClone()
-        {
-            Bandit bandit = new(BanditName, BanditMaxHealth);
-
-            Bandit clone = bandit.MyClone();
-            object cloneObj = bandit.Clone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(cloneObj, Is.Not.SameAs(clone));
-                Assert.That(cloneObj, Is.EqualTo(clone));
-
-                Assert.That(cloneObj is Creature);
-            });
+            instance.Health.Current -= 5;
+            instance.GoldCoins += 50;
         }
     }
 }

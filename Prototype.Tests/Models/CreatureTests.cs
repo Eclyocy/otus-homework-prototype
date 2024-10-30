@@ -1,4 +1,5 @@
 using Prototype.Models;
+using Prototype.Tests.Interfaces;
 
 namespace Prototype.Tests.Models
 {
@@ -6,11 +7,14 @@ namespace Prototype.Tests.Models
     /// Tests for <see cref="Creature"/>.
     /// </summary>
     [TestFixture]
-    public class CreatureTests
+    public class CreatureTests : MyCloneableTestBase<Creature>
     {
-        private const string CreatureName = "Fire Elemental";
-        private const int CreatureMaxHealth = 25;
+        private const string CreatureName = "Rat Swarm";
+        private const int CreatureMaxHealth = 5;
 
+        /// <summary>
+        /// Test that constructor initializes all the properties.
+        /// </summary>
         [Test]
         public void Test_Constructor()
         {
@@ -24,86 +28,16 @@ namespace Prototype.Tests.Models
             });
         }
 
-        [Test]
-        public void Test_MyClone_ClonedProperties()
+        /// <inheritdoc/>
+        protected override Creature CreateInstance()
         {
-            Creature creature = new(CreatureName, CreatureMaxHealth);
-
-            Creature clone = creature.MyClone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(creature));
-                Assert.That(clone, Is.EqualTo(creature));
-
-                Assert.That(clone.Name, Is.EqualTo(creature.Name));
-
-                Assert.That(clone.Health, Is.Not.SameAs(creature.Health));
-                Assert.That(clone.Health, Is.EqualTo(creature.Health));
-            });
+            return new(CreatureName, CreatureMaxHealth);
         }
 
-        [Test]
-        public void Test_MyClone_CopiesTrailingCurrentHealth_WhenOriginalIsChangedBeforeCloning()
+        /// <inheritdoc/>
+        protected override void ModifyInstance(Creature instance)
         {
-            Creature creature = new(CreatureName, CreatureMaxHealth);
-            creature.Health.Current -= 5;
-
-            Creature clone = creature.MyClone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(creature));
-                Assert.That(clone, Is.EqualTo(creature));
-
-                Assert.That(clone.Name, Is.EqualTo(creature.Name));
-
-                Assert.That(clone.Health, Is.Not.SameAs(creature.Health));
-                Assert.That(clone.Health, Is.EqualTo(creature.Health));
-
-                Assert.That(creature.Health.Current, Is.EqualTo(CreatureMaxHealth - 5));
-                Assert.That(clone.Health.Current, Is.EqualTo(CreatureMaxHealth - 5));
-            });
-        }
-
-        [Test]
-        public void Test_MyClone_CopiesStartingCurrentHealth_WhenOriginalIsChangedAfterCloning()
-        {
-            Creature creature = new(CreatureName, CreatureMaxHealth);
-
-            Creature clone = creature.MyClone();
-            creature.Health.Current -= 5;
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(clone, Is.Not.SameAs(creature));
-                Assert.That(clone, Is.Not.EqualTo(creature));
-
-                Assert.That(clone.Name, Is.EqualTo(creature.Name));
-
-                Assert.That(clone.Health, Is.Not.SameAs(creature.Health));
-                Assert.That(clone.Health, Is.Not.EqualTo(creature.Health));
-
-                Assert.That(creature.Health.Current, Is.EqualTo(CreatureMaxHealth - 5));
-                Assert.That(clone.Health.Current, Is.EqualTo(CreatureMaxHealth));
-            });
-        }
-
-        [Test]
-        public void Test_Clone_IsEqualToMyClone()
-        {
-            Creature creature = new(CreatureName, CreatureMaxHealth);
-
-            Creature clone = creature.MyClone();
-            object cloneObj = creature.Clone();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(cloneObj, Is.Not.SameAs(clone));
-                Assert.That(cloneObj, Is.EqualTo(clone));
-
-                Assert.That(cloneObj is Creature);
-            });
+            instance.Health.Current -= 5;
         }
     }
 }

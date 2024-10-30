@@ -40,10 +40,11 @@ namespace Prototype.Tests.Interfaces
 
         /// <summary>
         /// Test that <see cref="IMyCloneable{T}.MyClone"/> creates
-        /// an instance that is not affected by the changes to the original.
+        /// an instance that is not affected by the changes to the original
+        /// made after cloning.
         /// </summary>
         [Test]
-        public void Test_MyClone_IsNotAffectedByChangesToOriginal()
+        public void Test_MyClone_IsNotAffectedByChangesToOriginal_MadeAfterCloning()
         {
             T original = CreateInstance();
 
@@ -51,6 +52,22 @@ namespace Prototype.Tests.Interfaces
             ModifyInstance(original);
 
             Assert.That(clone, Is.Not.EqualTo(original));
+        }
+
+        /// <summary>
+        /// Test that <see cref="IMyCloneable{T}.MyClone"/> creates
+        /// an instance that is affected by the changes to the original
+        /// made before cloning.
+        /// </summary>
+        [Test]
+        public void Test_MyClone_IsAffectedByChangesToOriginal_MadeBeforeCloning()
+        {
+            T original = CreateInstance();
+            ModifyInstance(original);
+
+            T clone = original.MyClone();
+
+            Assert.That(clone, Is.EqualTo(original));
         }
 
         /// <summary>
